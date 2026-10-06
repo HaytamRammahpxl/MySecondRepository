@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualBasic;
 using System.Net.NetworkInformation;
+using System.Text;
 
 namespace GalaxyExpressJacobHaytam
 {
@@ -7,6 +8,8 @@ namespace GalaxyExpressJacobHaytam
     {
         static void Main(string[] args)
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;//valuta
+
             decimal basePrice = 89.95M;
             decimal baggageKilo = 1.75M;
 
@@ -36,7 +39,7 @@ namespace GalaxyExpressJacobHaytam
             }
 
             Console.Write("Geef het gewicht van de bagage in kg: ");
-            if (!int.TryParse(Console.ReadLine(), out int weightInKg))
+            if (!decimal.TryParse(Console.ReadLine(), out decimal weightInKg))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Ongeldig gewicht, probeer opnieuw!");
@@ -45,13 +48,9 @@ namespace GalaxyExpressJacobHaytam
                 return;
             }
 
-            Console.WriteLine("================================");
-            Console.WriteLine("        GALACTIC EXPRESS        ");
-            Console.WriteLine("          BOARDING PASS         ");
-            Console.WriteLine("================================");
             DayOfWeek dayOfWeek = departureDate.DayOfWeek;// Dag van de week 
 
-            Console.WriteLine(daysToTravel.TotalDays + " days left to departure on " + dayOfWeek);//Dagen printen
+            //Console.WriteLine(daysToTravel.TotalDays + " days left to departure on " + dayOfWeek);//Dagen printen
 
             if (daysToTravelDbl < 7)
             {
@@ -68,6 +67,34 @@ namespace GalaxyExpressJacobHaytam
             int chairNumber = random.Next(1, 7);
             int controleCode = random.Next(1000, 10000);
 
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine($"Reiziger       : {namePassenger}");
+            sb.AppendLine($"Bestemming     : {destination}");
+            sb.AppendLine($"Code:          : {namePassenger.Substring(0,3).ToUpper()}");
+            sb.AppendLine($"Vertrekdatum   : {departureDate:d}");
+            sb.AppendLine($"Vertrekdag     : {daysToTravel.TotalDays}");
+            sb.AppendLine();
+            sb.AppendLine($"Gate           : {gateNumber}");
+            sb.AppendLine($"Stoel          : Rij {rowNumber} - Stoel {chairNumber}");
+            sb.AppendLine($"Controlecode   : {controleCode}");
+            sb.AppendLine();
+            sb.AppendLine($"Bagage         : {weightInKg} kg");
+            sb.AppendLine($"Totale Prijs   : {finalCost:c}");
+            sb.AppendLine($"Boekingscode   : {namePassenger.Replace(" ", "-")}");
+            sb.AppendLine();
+            sb.AppendLine($"Retourdatum    : {departureDate.AddDays(7):d}");
+
+            string output = sb.ToString();
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("================================");
+            Console.WriteLine("        GALACTIC EXPRESS        ");
+            Console.WriteLine("          BOARDING PASS         ");
+            Console.WriteLine("================================");
+            Console.WriteLine(output);
+            Console.WriteLine("================================");
+            Console.ResetColor();
 
 
         }
